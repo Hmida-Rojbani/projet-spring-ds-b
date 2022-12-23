@@ -16,10 +16,11 @@ import java.util.NoSuchElementException;
 public class ImageServiceImp implements ImageService {
     private final ImageRepository imageRepository;
 
-    //TODO Complete this method
+    //TODO Complete this method(ok)
     @Override
-    public Image getImage(String id) {
-        return null;
+    public Image getImage(String id)
+    {
+        return imageRepository.findById(id).get();
     }
 
     @Override

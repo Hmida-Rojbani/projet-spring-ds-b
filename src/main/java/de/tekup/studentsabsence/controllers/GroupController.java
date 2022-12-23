@@ -138,8 +138,13 @@ public class GroupController {
     }
 
     @PostMapping("/{id}/add-absences")
-    public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
+    public String addAbsence(@PathVariable long id,
+                             @Valid @ModelAttribute("absence") Absence absence,
+                             BindingResult bindingResult,
+                             @RequestParam(value = "students", required = false) List<Student> students,
+                             Model model) {
         //TODO Complete the body of this method
+
         return "redirect:/groups/"+id+"/add-absences";
     }
 

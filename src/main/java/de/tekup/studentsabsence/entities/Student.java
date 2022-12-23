@@ -10,6 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -29,7 +31,13 @@ public class Student implements Serializable {
     private LocalDate dob;
 
     //TODO Complete Relations with other entities
+    @ManyToOne
+    private Group group;
 
+    @OneToMany(mappedBy = "student")
+    private List<Absence> absences;
+    @OneToOne
+    private Image image;
 
 
 }
