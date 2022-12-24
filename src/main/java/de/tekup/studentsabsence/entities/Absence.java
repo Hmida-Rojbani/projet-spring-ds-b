@@ -11,11 +11,13 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Absence implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,18 @@ public class Absence implements Serializable {
     @NotNull(message = "Hours is required")
     @Positive(message = "Should be positive")
     private float hours;
-   //TODO Complete Relations with other entities
 
+   //TODO Complete Relations with other entities : completed
+    @OneToOne
+    private Subject subject;
+    @ManyToOne
+    @JoinColumn(name = "student_sid")
+    private Student student;
 
+    public Student getStudent() {
+        return student;
+    }
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 }

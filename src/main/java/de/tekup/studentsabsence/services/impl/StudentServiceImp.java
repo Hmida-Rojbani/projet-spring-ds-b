@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 public class StudentServiceImp implements StudentService {
     private final StudentRepository studentRepository;
 
+
     @Override
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
@@ -34,15 +35,23 @@ public class StudentServiceImp implements StudentService {
 
     }
 
-    //TODO Complete this method
+    //TODO Complete this method : completed
     @Override
     public Student updateStudent(Student student) {
-        return null;
+        if(studentRepository.existsById(student.getSid()))
+        {
+            throw new NoSuchElementException("No Student with ID : " + student.getSid());
+        }
+
+        return studentRepository.save(student);
     }
 
-    //TODO Complete this method
+    //TODO Complete this method : completed
     @Override
     public Student deleteStudent(Long sid) {
-        return null;
+        Student student = getStudentBySid(sid);
+        studentRepository.delete(student);
+        return student;
+
     }
 }
