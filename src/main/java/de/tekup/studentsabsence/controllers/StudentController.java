@@ -90,11 +90,18 @@ public class StudentController {
     }
 
     @PostMapping("/{sid}/add-image")
-    //TODO complete the parameters of this method
-    public String addImage() {
-        //TODO complete the body of this method
+    //TODO complete the parameters of this method //
+    public String addImage(@PathVariable Long sid, BindingResult bindingResult, Model model) {
+
+   if(bindingResult.hasErrors()) {
+            model.addAttribute("groups", groupService.getAllGroups());
+            return "students/add-image";
+        }
+
+        //TODO complete the body of this method //
+        studentService.addImage(sid);
         return "redirect:/students";
-    }
+   }
 
     @RequestMapping(value = "/{sid}/display-image")
     public void getStudentPhoto(HttpServletResponse response, @PathVariable("sid") long sid) throws Exception {

@@ -30,6 +30,13 @@ public class Student implements Serializable {
 
     //TODO Complete Relations with other entities
 
+    @ManyToOne
+    public Group group;
 
+    @OneToMany
+    public List<Absence> absences;
+
+    @OneToOne
+    public Image image;
 
 }

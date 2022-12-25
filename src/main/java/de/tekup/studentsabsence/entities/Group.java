@@ -30,7 +30,9 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private SpecialityEnum speciality;
     //TODO Complete Relations with other entities
-
-
+    @OneToMany(mappedBy = "group")
+    public List<Student> students;
+    @OneToMany(mappedBy = "subject")
+    public List<GroupSubject> groupSubjects;
 
 }
