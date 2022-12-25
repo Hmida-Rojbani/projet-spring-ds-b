@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,9 +91,23 @@ public class StudentController {
     }
 
     @PostMapping("/{sid}/add-image")
-    //TODO complete the parameters of this method
-    public String addImage() {
-        //TODO complete the body of this method
+    //TODO complete the parameters of this method(ok)
+    public String addImage(@PathVariable Long sid,@RequestParam("image") MultipartFile image) {
+        //TODO complete the body of this method(ok)
+    Student s=studentService.getStudentBySid(sid);
+
+
+        if(!image.isEmpty()){
+            try {
+                Image img=imageService.addImage(image);
+                s.setImage(img);
+                studentService.updateStudent(s);
+            }catch (IOException e){
+                System.out.println(e.getMessage());
+            }
+
+
+        }
         return "redirect:/students";
     }
 

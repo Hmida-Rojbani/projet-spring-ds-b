@@ -1,6 +1,8 @@
 package de.tekup.studentsabsence.controllers;
 
 import de.tekup.studentsabsence.entities.Subject;
+import de.tekup.studentsabsence.services.AbsenceService;
+import de.tekup.studentsabsence.services.StudentService;
 import de.tekup.studentsabsence.services.SubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,7 +22,17 @@ import java.util.List;
 @AllArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;
+    private final StudentService studentService;
+    private final AbsenceService absenceService;
 
+    @GetMapping("/Subshow/{gid}/{sid}")
+    public String subjectAbsence(@PathVariable Long gid,@PathVariable Long sid,Model model) {
+        List l=absenceService.getAllAbsencesByGroupIdAndSubjectId(gid,sid);
+        model.addAttribute("students",l );
+        model.addAttribute("studentService",studentService );
+        model.addAttribute("absenceService",absenceService );
+        return "subjects/subjectsAbsence";
+    }
     @GetMapping({"", "/"})
     public String index(Model model) {
         List<Subject> subjects = subjectService.getAllSubjects();
@@ -72,6 +84,5 @@ public class SubjectController {
         model.addAttribute("subject", subjectService.getSubjectById(id));
         return "subjects/show";
     }
-
 
 }

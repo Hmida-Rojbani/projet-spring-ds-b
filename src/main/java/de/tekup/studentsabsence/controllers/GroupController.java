@@ -7,10 +7,7 @@ import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.enums.LevelEnum;
 import de.tekup.studentsabsence.enums.SpecialityEnum;
 import de.tekup.studentsabsence.holders.GroupSubjectHolder;
-import de.tekup.studentsabsence.services.AbsenceService;
-import de.tekup.studentsabsence.services.GroupService;
-import de.tekup.studentsabsence.services.GroupSubjectService;
-import de.tekup.studentsabsence.services.SubjectService;
+import de.tekup.studentsabsence.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +25,10 @@ public class GroupController {
     private final SubjectService subjectService;
     private final GroupSubjectService groupSubjectService;
     private final AbsenceService absenceService;
+
+
+
+
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -125,6 +126,7 @@ public class GroupController {
         return "redirect:/groups/"+gid+"/show";
     }
 
+
     @GetMapping("/{id}/add-absences")
     public String addAbsenceView(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);
@@ -143,9 +145,18 @@ public class GroupController {
                              BindingResult bindingResult,
                              @RequestParam(value = "students", required = false) List<Student> students,
                              Model model) {
-        //TODO Complete the body of this method
+        //TODO Complete the body of this method(ok)
+       for (Student i : students){
+           Absence ab=new Absence();
+           ab.setHours(absence.getHours());
+           ab.setStartDate(absence.getStartDate());
+           ab.setSubject(absence.getSubject());
+           ab.setStudent(i);
+           absenceService.addAbsence(ab);
 
+        }
         return "redirect:/groups/"+id+"/add-absences";
     }
+
 
 }
