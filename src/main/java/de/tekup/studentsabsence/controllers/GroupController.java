@@ -4,6 +4,7 @@ package de.tekup.studentsabsence.controllers;
 import de.tekup.studentsabsence.entities.Absence;
 import de.tekup.studentsabsence.entities.Group;
 import de.tekup.studentsabsence.entities.Student;
+import de.tekup.studentsabsence.entities.Subject;
 import de.tekup.studentsabsence.enums.LevelEnum;
 import de.tekup.studentsabsence.enums.SpecialityEnum;
 import de.tekup.studentsabsence.holders.GroupSubjectHolder;
@@ -28,7 +29,6 @@ public class GroupController {
     private final SubjectService subjectService;
     private final GroupSubjectService groupSubjectService;
     private final AbsenceService absenceService;
-
     @GetMapping({"", "/"})
     public String index(Model model) {
         List<Group> groups = groupService.getAllGroups();
@@ -81,19 +81,14 @@ public class GroupController {
         return "redirect:/groups";
     }
 
+
     @GetMapping("/{id}/show")
     public String show(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);
-
         model.addAttribute("group", group);
         model.addAttribute("groupSubjects",groupSubjectService.getSubjectsByGroupId(id));
         model.addAttribute("students",group.getStudents());
         model.addAttribute("absenceService", absenceService);
-
-        group.getStudents().forEach(student -> {
-
-        });
-
         return "groups/show";
     }
 
@@ -103,7 +98,6 @@ public class GroupController {
         model.addAttribute("group",groupService.getGroupById(id));
         model.addAttribute("subjects",subjectService.getAllSubjects());
         return "groups/add-subject";
-
     }
 
     @PostMapping("/{id}/add-subject")
@@ -140,6 +134,20 @@ public class GroupController {
     @PostMapping("/{id}/add-absences")
     public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
         //TODO Complete the body of this method
+        Group group = groupService.getGroupById(id);
+
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("group",group);
+            model.addAttribute("absence", new Absence());
+            model.addAttribute("groupSubjects", groupSubjectService.getSubjectsByGroupId(id));
+            model.addAttribute("students", group.getStudents());
+            return "groups/add-subject";
+        }
+        for (Student student:students) {
+            absence.setId(null);
+            absence.setStudent(student);
+            absenceService.addAbsence(absence);
+        }
         return "redirect:/groups/"+id+"/add-absences";
     }
 

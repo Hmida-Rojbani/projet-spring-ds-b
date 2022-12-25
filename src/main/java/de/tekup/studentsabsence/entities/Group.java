@@ -10,13 +10,16 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+
 @Entity
 @Data
-@ToString(exclude = "students")
+@ToString(exclude = {"subjects","students"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "_group")
 public class Group {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +34,10 @@ public class Group {
     private SpecialityEnum speciality;
     //TODO Complete Relations with other entities
 
+    @OneToMany(mappedBy = "group")
+    private List<GroupSubject> subjects;
 
+    @OneToMany(mappedBy = "group")
+    private List<Student> students;
 
 }

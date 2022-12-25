@@ -4,6 +4,7 @@ import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.repositories.StudentRepository;
 import de.tekup.studentsabsence.services.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class StudentServiceImp implements StudentService {
                 orElseThrow(() -> new NoSuchElementException("No Student With SID: " + sid));
     }
 
+
     @Override
     public Student addStudent(Student student) {
         return studentRepository.save(student);
@@ -37,12 +39,24 @@ public class StudentServiceImp implements StudentService {
     //TODO Complete this method
     @Override
     public Student updateStudent(Student student) {
-        return null;
+        if (student.getSid() == null || studentRepository.findById(student.getSid()).isEmpty() ) {
+            throw  new NoSuchElementException("Unable to update a student does not exist with a "+student.getSid()+" ID");
+        }
+
+        return this.addStudent(student);
     }
 
     //TODO Complete this method
     @Override
-    public Student deleteStudent(Long sid) {
-        return null;
+    public void deleteStudent(Long sid) {
+
+        if (sid == null) {
+            throw  new NoSuchElementException("Unable to delete a student with a NULL ID");
+        }
+
+        Student student=studentRepository.findById(sid).
+                orElseThrow(() -> new NoSuchElementException("No Student With SID: " + sid));
+         studentRepository.delete(student);
+
     }
 }

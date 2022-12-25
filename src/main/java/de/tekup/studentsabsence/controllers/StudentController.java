@@ -1,7 +1,9 @@
 package de.tekup.studentsabsence.controllers;
 
+import de.tekup.studentsabsence.entities.Group;
 import de.tekup.studentsabsence.entities.Image;
 import de.tekup.studentsabsence.entities.Student;
+import de.tekup.studentsabsence.holders.GroupSubjectHolder;
 import de.tekup.studentsabsence.services.GroupService;
 import de.tekup.studentsabsence.services.ImageService;
 import de.tekup.studentsabsence.services.StudentService;
@@ -48,7 +50,6 @@ public class StudentController {
             model.addAttribute("groups", groupService.getAllGroups());
             return "students/add";
         }
-
         studentService.addStudent(student);
         return "redirect:/students";
     }
@@ -56,8 +57,13 @@ public class StudentController {
     @GetMapping("/{sid}/update")
     public String updateView(@PathVariable Long sid, Model model) {
         model.addAttribute("student", studentService.getStudentBySid(sid));
-        model.addAttribute("groups", groupService.getAllGroups());
-        return "students/update";
+        List<Group> groups = groupService.getAllGroups();
+        model.addAttribute("groups", groups);
+        System.out.println(
+
+        );
+       return "students/update";
+
     }
 
     @PostMapping("/{sid}/update")
@@ -91,8 +97,17 @@ public class StudentController {
 
     @PostMapping("/{sid}/add-image")
     //TODO complete the parameters of this method
-    public String addImage() {
+    public String addImage( @PathVariable Long sid, Model model, @RequestParam("image") MultipartFile image ) {
+        try {
+            Image imageSave=imageService.addImage(image);
+            Student student=studentService.getStudentBySid(sid);
+            student.setImage(imageSave);
+            studentService.addStudent(student);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         //TODO complete the body of this method
+
         return "redirect:/students";
     }
 
