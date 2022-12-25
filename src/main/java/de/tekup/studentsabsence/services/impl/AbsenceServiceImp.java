@@ -86,8 +86,13 @@ public class AbsenceServiceImp implements AbsenceService {
     }
     //TODO Complete the countHours method
     public float countHours(List<Absence> absences) {
-
-        return 0;
+        float count = 0;
+        if(!absences.isEmpty()){
+            for(int i=0; i<absences.size(); i++){
+                count += absences.get(i).getHours();
+            }
+        }
+        return count;
+    }
     }
 
-}
