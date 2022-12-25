@@ -23,6 +23,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/groups")
 @AllArgsConstructor
+//controller
 public class GroupController {
     private final GroupService groupService;
     private final SubjectService subjectService;
