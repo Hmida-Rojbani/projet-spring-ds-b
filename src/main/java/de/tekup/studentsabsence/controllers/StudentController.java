@@ -1,5 +1,6 @@
 package de.tekup.studentsabsence.controllers;
 
+
 import de.tekup.studentsabsence.entities.Image;
 import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.services.GroupService;
@@ -91,8 +92,20 @@ public class StudentController {
 
     @PostMapping("/{sid}/add-image")
     //TODO complete the parameters of this method
-    public String addImage() {
+    public String addImage( @PathVariable("sid") long sid,@RequestParam("image") MultipartFile file) {
         //TODO complete the body of this method
+        Student student = studentService.getStudentBySid(sid);
+        Image image=new Image();
+
+        image.setStudent(student);
+
+        try {
+            imageService.addImage(file,image);
+        }catch (IOException ex){
+            System.out.println(ex.fillInStackTrace());
+        }
+
+
         return "redirect:/students";
     }
 
