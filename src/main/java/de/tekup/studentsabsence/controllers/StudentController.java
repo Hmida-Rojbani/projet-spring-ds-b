@@ -91,8 +91,17 @@ public class StudentController {
 
     @PostMapping("/{sid}/add-image")
     //TODO complete the parameters of this method
-    public String addImage() {
+    public String addImage(@Valid MultipartFile image, BindingResult bindingResult, Model model, Long sid) throws IOException {
         //TODO complete the body of this method
+        if(bindingResult.hasErrors()) {
+            if(bindingResult.hasErrors()) {
+                model.addAttribute("student",studentService.getStudentBySid(sid) );
+                return "students/add";
+            }
+
+            return "students/add-image";
+        }
+        imageService.addImage(image);
         return "redirect:/students";
     }
 
