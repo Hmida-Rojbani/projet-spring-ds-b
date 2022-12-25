@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>INDEX</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">supervised_user_circle</i>
+                    </div>
+                    <h4 class="card-title">Subject :${subjectName}</h4>
+                </div>
+                <div class="card-body">
+
+                    <div class="material-datatables">
+                        <table cellspacing="0" class="table table-striped table-no-bordered table-hover" id="datatables"
+                               style="width:100%" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Nombre d'heure</th>
+                                <th class="disabled-sorting text-right">Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Nombre d'heure</th>
+
+                                <th class="disabled-sorting text-right">Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr th:each="student : ${students}">
+                                <td th:text="${student.lastName   }"></td>
+                                <td><a  class="btn btn-primary btn-lg active" role="button"
+                                        th:href="@{/students/{sid}/{subid}/mail (sid=${student.sid}, subid=${subjectId})}">send Mail</a> </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end content-->
+            </div>
+            <!--  end card  -->
+        </div>
+        <!-- end col-md-12 -->
+    </div>
+</div>
+</body>
+</html>
