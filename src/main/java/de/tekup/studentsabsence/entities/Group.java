@@ -39,5 +39,6 @@ public class Group {
     @OneToMany
     public List<GroupSubject> groupSubjects;
 
+
 }
 

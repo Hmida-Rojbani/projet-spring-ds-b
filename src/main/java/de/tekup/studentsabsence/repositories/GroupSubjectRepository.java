@@ -13,4 +13,5 @@ public interface GroupSubjectRepository extends CrudRepository<GroupSubject, Gro
     ///TODO create a methode to find a groupSubject by Group Id and Subject Id(OK)
     GroupSubject findByGroupIdAndSubjectId(Long gid, Long sid);
 
+
 }

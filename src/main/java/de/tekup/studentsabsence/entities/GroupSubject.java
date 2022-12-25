@@ -16,12 +16,12 @@ public class GroupSubject implements Serializable {
     private GroupSubjectKey id;
 
     @ManyToOne
-    @MapsId("groupId")
+    @MapsId("group_id")
     @JoinColumn(name = "group_id")
     private Group group;
 
     @ManyToOne
-    @MapsId("subjectId")
+    @MapsId("subject_id")
     @JoinColumn(name = "subject_id")
     private Subject subject;
 

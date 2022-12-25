@@ -34,4 +34,5 @@ public class Absence implements Serializable {
     public Subject subject;
 
 
+
 }

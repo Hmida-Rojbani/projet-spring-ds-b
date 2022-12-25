@@ -98,8 +98,6 @@ public class GroupController {
 
         });
 
-
-
         return "groups/show";
     }
 

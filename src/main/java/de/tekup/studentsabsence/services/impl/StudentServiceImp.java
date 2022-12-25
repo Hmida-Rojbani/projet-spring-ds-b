@@ -43,9 +43,10 @@ public class StudentServiceImp implements StudentService {
         return studentRepository.save(student);
     }
 
-    //TODO Complete this method (OK)
+
     @Override
-    public void deleteStudent(Long sid) {
+    public Student deleteStudent(Long sid) {
         studentRepository.deleteById(sid);
+        return null;
     }
 }

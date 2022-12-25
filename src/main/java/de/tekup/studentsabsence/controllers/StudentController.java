@@ -1,4 +1,5 @@
 package de.tekup.studentsabsence.controllers;
+
 import de.tekup.studentsabsence.entities.Image;
 import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.services.GroupService;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
@@ -90,7 +92,7 @@ public class StudentController {
     }
 
     @PostMapping("/{sid}/add-image")
-    //TODO complete the parameters of this method (executable)
+    //TODO complete the parameters of this method (c bon )
     public String addImage(@PathVariable Long sid,@RequestParam("image") MultipartFile image) throws IOException {
 
         Student s=studentService.getStudentBySid(sid);
@@ -129,7 +131,7 @@ public class StudentController {
     public String EliminationMail(@PathVariable Long sid,@PathVariable Long subid) {
         try {
 
-  // Erreur
+
         }catch (Exception e){
             System.out.println("L email n a pas pu envoyer");
         }
