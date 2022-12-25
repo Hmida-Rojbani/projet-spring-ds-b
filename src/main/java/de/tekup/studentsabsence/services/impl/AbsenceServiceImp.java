@@ -33,13 +33,16 @@ public class AbsenceServiceImp implements AbsenceService {
     public List<Absence> getAllAbsencesByStudentId(Long sid) {
         List<Absence> absences = new ArrayList<>();
         //TODO complete the missing instructions
+        absenceRepository.findAllByStudent_Sid(sid).forEach(absences::add);
         return absences;
+
     }
 
     @Override
     public List<Absence> getAllAbsencesByStudentIdAndSubjectId(Long sid, Long id) {
         List<Absence> absences = new ArrayList<>();
         //TODO complete the missing instructions
+        absenceRepository.findAllByStudent_SidAndSubject_Id(sid,id).forEach(absences::add);
         return absences;
     }
 
@@ -86,8 +89,13 @@ public class AbsenceServiceImp implements AbsenceService {
     }
     //TODO Complete the countHours method
     public float countHours(List<Absence> absences) {
-
-        return 0;
+        float c = 0;
+        if(!absences.isEmpty()){
+            for(int i=0; i < absences.size(); i++){
+                c+= absences.get(i).getHours();
+            }
+        }
+        return c;
     }
 
 }

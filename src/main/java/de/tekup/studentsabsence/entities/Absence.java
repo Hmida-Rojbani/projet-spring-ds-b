@@ -29,5 +29,10 @@ public class Absence implements Serializable {
     private float hours;
    //TODO Complete Relations with other entities
 
+    @ManyToOne
+    public Student student;
+    @OneToOne
+    private Subject subject;
+
 
 }
