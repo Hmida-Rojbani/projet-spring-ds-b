@@ -91,10 +91,19 @@ public class StudentController {
 
     @PostMapping("/{sid}/add-image")
     //TODO complete the parameters of this method
-    public String addImage() {
+
         //TODO complete the body of this method
-        return "redirect:/students";
-    }
+        public String addImage( Model model, @PathVariable Long sid,  @RequestParam("image") MultipartFile image ) {
+        try {
+            Image imageSave = imageService.addImage(image);
+            Student student = studentService.getStudentBySid(sid);
+            student.setImage(imageSave);
+            studentService.addStudent(student);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    return "redirect:/students";
+}
 
     @RequestMapping(value = "/{sid}/display-image")
     public void getStudentPhoto(HttpServletResponse response, @PathVariable("sid") long sid) throws Exception {
