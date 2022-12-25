@@ -15,6 +15,7 @@ public class GroupSubject implements Serializable {
     @EmbeddedId
     private GroupSubjectKey id;
 
+
     @ManyToOne
     @MapsId("group_id")
     @JoinColumn(name = "group_id")

@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class GroupSubjectKey implements Serializable {
     @Column(name = "group_id")
     private Long groupId ;
+
     @Column(name = "subject_id")
     private Long subjectId;
 }

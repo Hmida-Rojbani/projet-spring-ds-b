@@ -29,6 +29,15 @@
                                 <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                                     <div class="fileinput-new thumbnail">
                                         <img alt="..." th:src="@{/img/image_placeholder.jpg}">
+
+
+                                        <!--
+                                                                                <img alt="..."  th:if="${student.image}" th:src="@{/students/{sid}/display-image (sid=${student.sid})}"  src="@{/img/image_placeholder.jpg}">
+
+                                       <img alt="..."  th:if="${student.image}" th:src="@{/students/{sid}/display-image (sid=${student.sid})}"  src="@{/img/image_placeholder.jpg}">
+
+                                         <img alt="..."  th:src="@{${student.image}?'/students/{sid}/display-image (sid=${student.sid})\':'/img/image_placeholder.jpg'" th:src="">
+ -->
                                     </div>
                                     <div class="fileinput-preview fileinput-exists thumbnail"></div>
                                     <div>
