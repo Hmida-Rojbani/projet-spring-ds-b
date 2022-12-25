@@ -30,6 +30,7 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student addStudent(Student student) {
+
         return studentRepository.save(student);
 
     }
@@ -37,12 +38,15 @@ public class StudentServiceImp implements StudentService {
     //TODO Complete this method
     @Override
     public Student updateStudent(Student student) {
-        return null;
+        Student s = getStudentBySid(student.getSid());
+        return studentRepository.save(s);
     }
 
     //TODO Complete this method
     @Override
     public Student deleteStudent(Long sid) {
-        return null;
+        Student s=studentRepository.findById(sid).get();
+        studentRepository.delete(s);
+        return s;
     }
 }
