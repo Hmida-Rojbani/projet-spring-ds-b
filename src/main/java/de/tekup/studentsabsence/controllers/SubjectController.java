@@ -1,6 +1,12 @@
 package de.tekup.studentsabsence.controllers;
 
+import de.tekup.studentsabsence.entities.Absence;
+import de.tekup.studentsabsence.entities.GroupSubject;
+import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.entities.Subject;
+import de.tekup.studentsabsence.services.AbsenceService;
+import de.tekup.studentsabsence.services.GroupSubjectService;
+import de.tekup.studentsabsence.services.StudentService;
 import de.tekup.studentsabsence.services.SubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -20,6 +28,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;
+    private final StudentService studentService;
+    private final AbsenceService absenceService;
+    private final GroupSubjectService groupSubjectService;
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -73,5 +84,21 @@ public class SubjectController {
         return "subjects/show";
     }
 
+    @GetMapping("/Subshow/{gid}/{sid}")
+    public String subjectAbsence(@PathVariable Long gid,@PathVariable Long sid,Model model) {
+        HashSet<Student> filtredList=new HashSet<Student>();
+        List <Absence>l=absenceService.getAllAbsencesByGroupIdAndSubjectId(gid,sid);
+        GroupSubject gs=groupSubjectService.getSubjectByIdAndGroupId(sid,gid);
 
+        for (Absence ab:l){
+            if(absenceService.hoursCountByStudentAndSubject(ab.getStudent().getSid(),sid)> gs.getHours()/2){
+                filtredList.add(ab.getStudent());
+            }
+        }
+        model.addAttribute("students",filtredList );
+        model.addAttribute("subjectId",sid );
+        model.addAttribute("subjectName",gs.getSubject().getName() );
+
+        return "subjects/subjectsAbsence";
+    }
 }
