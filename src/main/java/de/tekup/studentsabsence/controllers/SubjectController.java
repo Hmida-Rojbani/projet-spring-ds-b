@@ -1,5 +1,4 @@
 package de.tekup.studentsabsence.controllers;
-
 import de.tekup.studentsabsence.entities.Subject;
 import de.tekup.studentsabsence.services.SubjectService;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.validation.Valid;
 import java.util.List;
 
