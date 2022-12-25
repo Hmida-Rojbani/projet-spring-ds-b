@@ -1,6 +1,11 @@
 package de.tekup.studentsabsence.controllers;
 
+import de.tekup.studentsabsence.entities.Group;
+import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.entities.Subject;
+import de.tekup.studentsabsence.services.EmailService;
+import de.tekup.studentsabsence.services.GroupSubjectService;
+import de.tekup.studentsabsence.services.StudentService;
 import de.tekup.studentsabsence.services.SubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +26,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;
+    private  final GroupSubjectService groupSubjectService;
+    private  final StudentService studentService;
+    private final EmailService emailService;
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -66,12 +75,27 @@ public class SubjectController {
         subjectService.deleteSubject(id);
         return "redirect:/subjects";
     }
-
     @GetMapping("/{id}/show")
     public String show(@PathVariable Long id, Model model) {
+        //Question 2
+        List<Group> groups=new ArrayList<>();
+        groupSubjectService.getSubjectsGroupBySubjectId(id).forEach(groupSubject -> groups.add(groupSubject.getGroup()));
         model.addAttribute("subject", subjectService.getSubjectById(id));
+        model.addAttribute("groups",groups);
+        model.addAttribute("subjectService",subjectService);
         return "subjects/show";
     }
+    //question 2 sending mail
+    @GetMapping("/Mail/{sid}/{sbid}")
+    public String sendingMail(@PathVariable Long sid,@PathVariable Long sbid){
+        Subject subject=subjectService.getSubjectById(sbid);
+        Student student= studentService.getStudentBySid(sid);
+        emailService.sendEEmail(student,subject);
+        return "redirect:/subjects/"+sbid+"/show";
+    }
+
+
+
 
 
 }
