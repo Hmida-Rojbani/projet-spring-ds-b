@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>INDEX</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Welcome To TEK-UP Statistic Absence Managing System</h2>
+
+    <div class="container-fluid">
+
+        <div class="row" style="width:100%;">
+
+            <div class="col-md-4">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="card-title">Nbr Etudiants</h3>
+                        <h4 class="card-subtitle mb-2 text-muted" th:text="${students}"></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="card-title">Nbr Modules</h3>
+                        <h4 class="card-subtitle mb-2 text-muted" th:text="${subjects}"></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="card-title">Nbr Groupes</h3>
+                        <h4 class="card-subtitle mb-2 text-muted" th:text="${groups}"></h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-5">
+
+            <div class="col-md-6">
+                <h4>Statistiques Absences</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in metus quis felis imperdiet pharetra. Ut enim enim, aliquet eget nisl et, malesuada blandit nunc. Aenean sagittis volutpat augue sit amet sollicitudin. Morbi feugiat lorem vel quam facilisis placerat. Nulla</p>
+                <a class="btn btn-primary" th:href="@{/statistics/statistic-absences}">Allez Vers</a>
+            </div>
+
+            <div class="col-md-6">
+                <h4>Statistiques Etudiants</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in metus quis felis imperdiet pharetra. Ut enim enim, aliquet eget nisl et, malesuada blandit nunc. Aenean sagittis volutpat augue sit amet sollicitudin. Morbi feugiat lorem vel quam facilisis placerat. Nulla</p>
+                <a class="btn btn-primary" >Allez Vers</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

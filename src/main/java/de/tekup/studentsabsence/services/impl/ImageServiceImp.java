@@ -9,17 +9,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
 public class ImageServiceImp implements ImageService {
     private final ImageRepository imageRepository;
 
-    //TODO Complete this method
     @Override
     public Image getImage(String id) {
-        return null;
+        Image img = imageRepository.findById(id).get();
+        return img;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class ImageServiceImp implements ImageService {
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         String fileType = image.getContentType();
         byte[] data = image.getBytes();
-        Image img = new Image(null, fileName, fileType, data);
+        Image img = new Image(fileName, fileType, data);
         return imageRepository.save(img);
     }
 }

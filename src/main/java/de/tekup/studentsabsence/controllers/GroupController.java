@@ -6,11 +6,9 @@ import de.tekup.studentsabsence.entities.Group;
 import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.enums.LevelEnum;
 import de.tekup.studentsabsence.enums.SpecialityEnum;
-import de.tekup.studentsabsence.holders.GroupSubjectHolder;
-import de.tekup.studentsabsence.services.AbsenceService;
-import de.tekup.studentsabsence.services.GroupService;
-import de.tekup.studentsabsence.services.GroupSubjectService;
-import de.tekup.studentsabsence.services.SubjectService;
+import de.tekup.studentsabsence.repositories.StudentRepository;
+import de.tekup.studentsabsence.services.*;
+import de.tekup.studentsabsence.services.holders.GroupSubjectHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +16,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/groups")
@@ -27,6 +27,8 @@ public class GroupController {
     private final GroupService groupService;
     private final SubjectService subjectService;
     private final GroupSubjectService groupSubjectService;
+    private final StudentRepository studentRepository;
+    private final StudentService studentService;
     private final AbsenceService absenceService;
 
     @GetMapping({"", "/"})
@@ -84,13 +86,15 @@ public class GroupController {
     @GetMapping("/{id}/show")
     public String show(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);
+        System.out.println(group);
+        List<Student> studentList = studentRepository.findByGroup_Id(id); // add this also for more precisions on list students group
 
         model.addAttribute("group", group);
         model.addAttribute("groupSubjects",groupSubjectService.getSubjectsByGroupId(id));
-        model.addAttribute("students",group.getStudents());
+        model.addAttribute("students",studentList);
         model.addAttribute("absenceService", absenceService);
 
-        group.getStudents().forEach(student -> {
+        group.getStudent().forEach(student -> {
 
         });
 
@@ -128,18 +132,38 @@ public class GroupController {
     @GetMapping("/{id}/add-absences")
     public String addAbsenceView(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);
+        List<Student> students = studentRepository.findByGroup_Id(id); // Add this because that was failed !
 
+        // System.out.println(students); // to look !!
+        // System.out.println(groupSubjectService.getSubjectsByGroupId(id));
         model.addAttribute("group", group);
         model.addAttribute("absence", new Absence());
         model.addAttribute("groupSubjects", groupSubjectService.getSubjectsByGroupId(id));
-        model.addAttribute("students", group.getStudents());
+        model.addAttribute("students", students);
 
         return "groups/add-absences";
     }
 
     @PostMapping("/{id}/add-absences")
-    public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
-        //TODO Complete the body of this method
+    public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) Student students, Model model) {
+
+        System.out.println("-------------");
+        System.out.println(students);
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("group",groupService.getGroupById(id));
+            model.addAttribute("subjects",subjectService.getAllSubjects());
+            model.addAttribute("groupSubjects", groupSubjectService.getSubjectsByGroupId(id));
+            model.addAttribute("students", students);
+
+            return "groups/add-absences";
+        }
+
+        // All this things because they was errors ! Thats incredible !
+        Absence absence1 = absence;
+        Student student = students;
+        absence1.setStudent(student);
+        absenceService.addAbsence(absence1);
+
         return "redirect:/groups/"+id+"/add-absences";
     }
 

@@ -16,4 +16,20 @@ public class GroupSubjectKey implements Serializable {
     private Long groupId ;
     @Column(name = "subject_id")
     private Long subjectId;
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
+    }
 }

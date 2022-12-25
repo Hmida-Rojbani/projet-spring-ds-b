@@ -22,8 +22,41 @@ public class GroupSubject implements Serializable {
 
     @ManyToOne
     @MapsId("subject_id")
-    @JoinColumn(name = "subject_id")
+    @JoinColumn(name = "subject_id", referencedColumnName = "")
     private Subject subject;
 
     private float hours;
+
+
+    public GroupSubjectKey getId() {
+        return id;
+    }
+
+    public void setId(GroupSubjectKey id) {
+        this.id = id;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public float getHours() {
+        return hours;
+    }
+
+    public void setHours(float hours) {
+        this.hours = hours;
+    }
 }
