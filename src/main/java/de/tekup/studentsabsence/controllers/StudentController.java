@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
 @Controller
 @AllArgsConstructor
 @RequestMapping("/students")
@@ -43,7 +42,9 @@ public class StudentController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid Student student, BindingResult bindingResult, Model model) {
+    public String add(@Valid @ModelAttribute("student") Student student, BindingResult bindingResult, Model model) {
+
+
         if(bindingResult.hasErrors()) {
             model.addAttribute("groups", groupService.getAllGroups());
             return "students/add";
@@ -53,6 +54,7 @@ public class StudentController {
         return "redirect:/students";
     }
 
+
     @GetMapping("/{sid}/update")
     public String updateView(@PathVariable Long sid, Model model) {
         model.addAttribute("student", studentService.getStudentBySid(sid));
@@ -61,7 +63,7 @@ public class StudentController {
     }
 
     @PostMapping("/{sid}/update")
-    public String update(@PathVariable Long sid, @Valid Student student, BindingResult bindingResult, Model model) {
+    public String update(@PathVariable Long sid, @Valid @ModelAttribute("student") Student student, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             model.addAttribute("groups", groupService.getAllGroups());
             return "students/update";
@@ -90,9 +92,25 @@ public class StudentController {
     }
 
     @PostMapping("/{sid}/add-image")
-    //TODO complete the parameters of this method
-    public String addImage() {
-        //TODO complete the body of this method
+    //TODO complete the parameters of this method (c bon )
+    public String addImage(@PathVariable Long sid,@RequestParam("image") MultipartFile image) throws IOException {
+
+        Student s=studentService.getStudentBySid(sid);
+
+
+        if(!image.isEmpty()){
+
+            Image img= null;
+            try {
+                img = imageService.addImage(image);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            s.setImage(img);
+                studentService.updateStudent(s);
+
+
+        }
         return "redirect:/students";
     }
 
@@ -108,4 +126,15 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/{sid}/{subid}/mail")
+
+    public String EliminationMail(@PathVariable Long sid,@PathVariable Long subid) {
+        try {
+
+
+        }catch (Exception e){
+            System.out.println("L email n a pas pu envoyer");
+        }
+        return "subjects/subjectsAbsence";
+    }
 }
