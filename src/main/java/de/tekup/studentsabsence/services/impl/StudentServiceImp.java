@@ -31,18 +31,33 @@ public class StudentServiceImp implements StudentService {
     @Override
     public Student addStudent(Student student) {
         return studentRepository.save(student);
+    }
 
+    @Override
+    public Student updateStudent(Student student) {
+        if (student.getSid() == null ) {
+            throw new NoSuchElementException("ID IS NULL ");
+        }
+        studentRepository.findById(student.getSid()).
+                orElseThrow(() -> new NoSuchElementException("No Student With SID: " + student.getSid()));
+        return this.studentRepository.save(student);
     }
 
     //TODO Complete this method
-    @Override
-    public Student updateStudent(Student student) {
-        return null;
-    }
+
+
 
     //TODO Complete this method
     @Override
     public Student deleteStudent(Long sid) {
-        return null;
+
+        if (sid == null) {
+            throw new NoSuchElementException("Unable to delete a student with a NULL ID");
+        }
+
+        Student student = studentRepository.findById(sid).
+                orElseThrow(() -> new NoSuchElementException("No Student With SID: " + sid));
+        studentRepository.delete(student);
+        return student;
     }
 }
