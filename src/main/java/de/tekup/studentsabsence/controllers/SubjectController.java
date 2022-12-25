@@ -22,6 +22,7 @@ public class SubjectController {
     private final SubjectService subjectService;
 
 
+
     @GetMapping({"", "/"})
     public String index(Model model) {
         List<Subject> subjects = subjectService.getAllSubjects();

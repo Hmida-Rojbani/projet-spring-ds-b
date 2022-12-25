@@ -48,6 +48,7 @@ public class Student implements Serializable {
 
     //TODO Complete Relations with other entities
 
+
     @OneToOne
     private Image image;
     @ManyToOne

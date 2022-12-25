@@ -81,6 +81,7 @@ public class GroupController {
         return "redirect:/groups";
     }
 
+
     @GetMapping("/{id}/show")
     public String show(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);

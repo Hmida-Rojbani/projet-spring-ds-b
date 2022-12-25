@@ -63,6 +63,7 @@ public class StudentController {
 
         );
        return "students/update";
+
     }
 
     @PostMapping("/{sid}/update")

@@ -43,7 +43,6 @@ public class GroupSubjectServiceImp implements GroupSubjectService {
         //TODO find a groupSubject by Group Id and Subject Id
         Group group = groupService.getGroupById(gid);
         Subject subject = subjectService.getSubjectById(sid);
-
         GroupSubject groupSubject= groupSubjectRepository.findGroupSubjectByGroupAndSubject(group,subject);
 
         groupSubjectRepository.delete(groupSubject);
