@@ -1,4 +1,4 @@
-package de.tekup.studentsabsence.holders;
+package de.tekup.studentsabsence.services.holders;
 
 import de.tekup.studentsabsence.entities.Subject;
 import lombok.AllArgsConstructor;

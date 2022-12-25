@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title>INDEX</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+      <h2>Statistiques Absences</h2>
+
+      <div th:each="subjects : ${subjects}">
+          <table class="table mb-3" style="border: solid 1px black;">
+              <thead>
+              <tr>
+                  <th scope="col">Libellé</th>
+                  <th scope="col">Valeurs</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="subjects : ${subjects}">
+                  <td th:text="${subjects.key}" />
+                  <td th:text="${subjects.value}" />
+              </tr>
+              </tbody>
+          </table>
+          <hr>
+
+      </div>
+
+
+
+</div>
+
+
+</body>
+</html>

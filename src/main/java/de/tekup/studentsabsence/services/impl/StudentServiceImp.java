@@ -1,5 +1,6 @@
 package de.tekup.studentsabsence.services.impl;
 
+import de.tekup.studentsabsence.entities.Group;
 import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.repositories.StudentRepository;
 import de.tekup.studentsabsence.services.StudentService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,19 +32,26 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student addStudent(Student student) {
-        return studentRepository.save(student);
+        Student student1 = student;
+        Group group = student.getGroup();
+        student1.setGroup(group); // because we have an error when we saved a student (group_id was already null)
+        System.out.println(group);
+        return studentRepository.save(student1);
 
     }
 
-    //TODO Complete this method
     @Override
     public Student updateStudent(Student student) {
-        return null;
+        if (!studentRepository.existsById(student.getSid())) {
+            throw new NoSuchElementException("No Subject with ID : " + student.getSid());
+        }
+        return studentRepository.save(student);
     }
 
-    //TODO Complete this method
     @Override
     public Student deleteStudent(Long sid) {
-        return null;
+        Student student = getStudentBySid(sid);
+        studentRepository.delete(student);
+        return student;
     }
 }
