@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -19,15 +18,24 @@ public class ImageServiceImp implements ImageService {
     //TODO Complete this method
     @Override
     public Image getImage(String id) {
-        return null;
+        return imageRepository.findById(id).get();
     }
 
     @Override
-    public Image addImage(MultipartFile image) throws IOException {
+    public Image addImage(MultipartFile image,Image img) throws IOException {
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         String fileType = image.getContentType();
         byte[] data = image.getBytes();
-        Image img = new Image(null, fileName, fileType, data);
+        //Image img = new Image(null, fileName, fileType, data);
+        img.setFileName(fileName);
+        img.setData(data);
+        try {
+            img.setData((image.getBytes()));
+        }catch (IOException e){
+            System.out.println(e.toString());
+        }
+        img.setFileType(fileType);
+
         return imageRepository.save(img);
     }
 }
