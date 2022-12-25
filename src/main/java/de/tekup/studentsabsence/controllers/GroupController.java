@@ -4,9 +4,13 @@ package de.tekup.studentsabsence.controllers;
 import de.tekup.studentsabsence.entities.Absence;
 import de.tekup.studentsabsence.entities.Group;
 import de.tekup.studentsabsence.entities.Student;
+import de.tekup.studentsabsence.entities.Subject;
 import de.tekup.studentsabsence.enums.LevelEnum;
 import de.tekup.studentsabsence.enums.SpecialityEnum;
 import de.tekup.studentsabsence.holders.GroupSubjectHolder;
+import de.tekup.studentsabsence.repositories.GroupRepository;
+import de.tekup.studentsabsence.repositories.StudentRepository;
+import de.tekup.studentsabsence.repositories.SubjectRepository;
 import de.tekup.studentsabsence.services.AbsenceService;
 import de.tekup.studentsabsence.services.GroupService;
 import de.tekup.studentsabsence.services.GroupSubjectService;
@@ -28,6 +32,9 @@ public class GroupController {
     private final SubjectService subjectService;
     private final GroupSubjectService groupSubjectService;
     private final AbsenceService absenceService;
+    private final StudentRepository studentRepository;
+    private final GroupRepository groupRepository;
+    private final SubjectRepository subjectRepository;
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -45,7 +52,7 @@ public class GroupController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid Group group, BindingResult bindingResult, Model model) {
+    public String add(@Valid @ModelAttribute("group") Group group, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             model.addAttribute("levels", LevelEnum.values());
             model.addAttribute("specialities", SpecialityEnum.values());
@@ -89,10 +96,15 @@ public class GroupController {
         model.addAttribute("groupSubjects",groupSubjectService.getSubjectsByGroupId(id));
         model.addAttribute("students",group.getStudents());
         model.addAttribute("absenceService", absenceService);
-
+        Subject s=subjectService.getSubjectById(absenceService.getSumSUbjectAB(group.getId()));
+        Subject s2=subjectService.getSubjectById(absenceService.getSumMinSUbjectAB(group.getId()));
+        model.addAttribute("subjectmaxab",s.getName());
+        model.addAttribute("subjectminab",s2.getName());
         group.getStudents().forEach(student -> {
 
         });
+
+
 
         return "groups/show";
     }
@@ -128,6 +140,7 @@ public class GroupController {
     @GetMapping("/{id}/add-absences")
     public String addAbsenceView(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);
+        System.err.println(group.getStudents());
 
         model.addAttribute("group", group);
         model.addAttribute("absence", new Absence());
@@ -138,9 +151,26 @@ public class GroupController {
     }
 
     @PostMapping("/{id}/add-absences")
-    public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
-        //TODO Complete the body of this method
+    public String addAbsence(@PathVariable long id, @Valid @ModelAttribute("absence") Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
+        //TODO Complete the body of this method (test then done)
+
+        if(bindingResult.hasErrors())
+        {
+            return "groups/add-absences";
+        }
+        if(!students.isEmpty()){
+            for(int i=0; i<students.size(); i++){
+                        Absence ab=new Absence();
+                        ab.setHours(absence.getHours());
+                        ab.setStudent(students.get(i));
+                        ab.setSubject(absence.getSubject());
+                        ab.setStartDate(absence.getStartDate());
+                absenceService.addAbsence(ab);
+            }
+        }
+
         return "redirect:/groups/"+id+"/add-absences";
     }
+
 
 }

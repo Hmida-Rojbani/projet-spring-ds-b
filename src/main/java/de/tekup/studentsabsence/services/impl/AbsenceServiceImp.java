@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 @Service
 @AllArgsConstructor
 public class AbsenceServiceImp implements AbsenceService {
+
     private final AbsenceRepository absenceRepository;
 
     @Override
@@ -32,14 +33,16 @@ public class AbsenceServiceImp implements AbsenceService {
     @Override
     public List<Absence> getAllAbsencesByStudentId(Long sid) {
         List<Absence> absences = new ArrayList<>();
-        //TODO complete the missing instructions
+        //TODO complete the missing instructions (done)
+        absenceRepository.findAllByStudent_Sid(sid).forEach(absences::add);
         return absences;
     }
 
     @Override
     public List<Absence> getAllAbsencesByStudentIdAndSubjectId(Long sid, Long id) {
         List<Absence> absences = new ArrayList<>();
-        //TODO complete the missing instructions
+        //TODO complete the missing instructions (done)
+        absenceRepository.findAllByStudent_SidAndSubject_Id(sid,id).forEach(absences::add);
         return absences;
     }
 
@@ -66,7 +69,12 @@ public class AbsenceServiceImp implements AbsenceService {
         absenceRepository.delete(absence);
         return absence;
     }
-
+    public Long getSumSUbjectAB(Long gid){
+        return absenceRepository.findSumhourBySubject(gid);
+    }
+    public Long getSumMinSUbjectAB(Long gid){
+        return absenceRepository.findSumMinhourBySubject(gid);
+    }
     @Override
     public float hoursCountByStudent(Long sid) {
         List<Absence> absences = getAllAbsencesByStudentId(sid);
@@ -84,10 +92,15 @@ public class AbsenceServiceImp implements AbsenceService {
         List<Absence> absences = getAllAbsencesByStudentIdAndSubjectId(sid, id);
         return countHours(absences);
     }
-    //TODO Complete the countHours method
+    //TODO Complete the countHours method (done)
     public float countHours(List<Absence> absences) {
-
-        return 0;
+        float count = 0;
+        if(!absences.isEmpty()){
+            for(int i=0; i<absences.size(); i++){
+                count += absences.get(i).getHours();
+            }
+        }
+        return count;
     }
 
 }

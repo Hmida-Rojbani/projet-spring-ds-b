@@ -5,6 +5,8 @@ import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.services.GroupService;
 import de.tekup.studentsabsence.services.ImageService;
 import de.tekup.studentsabsence.services.StudentService;
+import de.tekup.studentsabsence.services.SubjectService;
+import de.tekup.studentsabsence.services.impl.EmailSenderService;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class StudentController {
     private final StudentService studentService;
     private final GroupService groupService;
     private final ImageService imageService;
+    private final SubjectService subjectService;
+    private  final EmailSenderService emailSenderService;
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -43,15 +47,18 @@ public class StudentController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid Student student, BindingResult bindingResult, Model model) {
+    public String add(@Valid @ModelAttribute("student") Student student, BindingResult bindingResult, Model model) {
+
+
         if(bindingResult.hasErrors()) {
-            model.addAttribute("groups", groupService.getAllGroups());
+        model.addAttribute("groups", groupService.getAllGroups());
             return "students/add";
         }
 
         studentService.addStudent(student);
         return "redirect:/students";
     }
+
 
     @GetMapping("/{sid}/update")
     public String updateView(@PathVariable Long sid, Model model) {
@@ -90,9 +97,23 @@ public class StudentController {
     }
 
     @PostMapping("/{sid}/add-image")
-    //TODO complete the parameters of this method
-    public String addImage() {
-        //TODO complete the body of this method
+    //TODO complete the parameters of this method(ok)
+    public String addImage(@PathVariable Long sid,@RequestParam("image") MultipartFile image) {
+        //TODO complete the body of this method(ok)
+        Student s=studentService.getStudentBySid(sid);
+
+
+        if(!image.isEmpty()){
+            try {
+                Image img=imageService.addImage(image);
+                s.setImage(img);
+                studentService.updateStudent(s);
+            }catch (IOException e){
+                System.out.println(e.getMessage());
+            }
+
+
+        }
         return "redirect:/students";
     }
 
@@ -106,6 +127,15 @@ public class StudentController {
             InputStream inputStream = new ByteArrayInputStream(image.getData());
             IOUtils.copy(inputStream, response.getOutputStream());
         }
+    }
+    @GetMapping("/{sid}/{subid}/mail")
+    public String sendMailElimin(@PathVariable Long sid,@PathVariable Long subid) {
+      try {
+          emailSenderService.sendmail(studentService.getStudentBySid(sid).getEmail(), subjectService.getSubjectById(subid).getName());
+      }catch (Exception e){
+          System.out.println(e.getMessage());
+      }
+        return "subjects/subjectsAbsence";
     }
 
 }
