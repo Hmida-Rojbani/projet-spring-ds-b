@@ -18,7 +18,10 @@ public class SubjectServiceImp implements SubjectService {
     //TODO Complete this method
     @Override
     public List<Subject> getAllSubjects() {
-        return null;
+
+        List<Subject> subjects = new ArrayList<>();
+        subjectRepository.findAll().forEach(subjects::add);
+        return subjects;
     }
 
     @Override

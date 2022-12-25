@@ -91,7 +91,6 @@ public class GroupController {
         model.addAttribute("absenceService", absenceService);
 
         group.getStudents().forEach(student -> {
-
         });
 
         return "groups/show";
@@ -140,6 +139,7 @@ public class GroupController {
     @PostMapping("/{id}/add-absences")
     public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
         //TODO Complete the body of this method
+      
         return "redirect:/groups/"+id+"/add-absences";
     }
 

@@ -5,6 +5,7 @@ import de.tekup.studentsabsence.entities.Student;
 import de.tekup.studentsabsence.services.GroupService;
 import de.tekup.studentsabsence.services.ImageService;
 import de.tekup.studentsabsence.services.StudentService;
+import de.tekup.studentsabsence.services.impl.ImageServiceImp;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class StudentController {
     private final StudentService studentService;
     private final GroupService groupService;
     private final ImageService imageService;
-
+    private final ImageServiceImp imageServiceImp;
     @GetMapping({"", "/"})
     public String index(Model model) {
         List<Student> students = studentService.getAllStudents();
@@ -91,8 +92,22 @@ public class StudentController {
 
     @PostMapping("/{sid}/add-image")
     //TODO complete the parameters of this method
-    public String addImage() {
+    public String addImage( @PathVariable("sid") long sid,@RequestParam("image") MultipartFile file) {
         //TODO complete the body of this method
+
+        Student student = studentService.getStudentBySid(sid);
+        Image image=new Image();
+
+        image.setStudent(student);
+
+      //  image.setFileType(file.getContentType());
+       try {
+           imageService.addImage(file,image);
+       }catch (IOException ex){
+           System.out.println(ex.fillInStackTrace());
+       }
+
+
         return "redirect:/students";
     }
 

@@ -1,15 +1,20 @@
 package de.tekup.studentsabsence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.tekup.studentsabsence.enums.LevelEnum;
 import de.tekup.studentsabsence.enums.SpecialityEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+
 @Entity
 @Data
 @ToString(exclude = "students")
@@ -30,7 +35,9 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private SpecialityEnum speciality;
     //TODO Complete Relations with other entities
-
-
+    @OneToMany(mappedBy="student")
+    private ArrayList<Student> students;
+    @OneToMany(mappedBy="group")
+    private ArrayList<GroupSubject> groupSubjects;
 
 }
